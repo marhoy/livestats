@@ -3,6 +3,7 @@
 from math import copysign,fabs,sqrt
 import random, sys
 
+
 def calcP2(qp1, q, qm1, d, np1, n, nm1):
     d = float(d)
     n = float(n)
@@ -15,8 +16,10 @@ def calcP2(qp1, q, qm1, d, np1, n, nm1):
 
     return q + outer * (inner_left + inner_right)
 
-class Quantile:
+
+class Quantile(object):
     LEN = 5
+
     def __init__(self, p):
         """ Constructs a single quantile object """
         self.dn = [0, p/2, p, (1 + p)/2, 1]
@@ -90,7 +93,7 @@ class Quantile:
 
 
 class LiveStats:
-    def __init__(self, p = [0.5]):
+    def __init__(self, percentiles=[.5]):
         """ Constructs a LiveStream object
 
         Keyword arguments:
@@ -107,8 +110,8 @@ class LiveStats:
         self.count = 0
         self.tiles = {}
         self.initialized = False
-        for i in p:
-            self.tiles[i] = Quantile(i)
+        for p in percentiles:
+            self.tiles[p] = Quantile(p)
 
     def add(self, item):
         """ Adds another datum """
@@ -133,7 +136,6 @@ class LiveStats:
 
         # Skewness
         self.skew_m3 = self.skew_m3 + (item - self.average)**3.0
-
 
     def quantiles(self):
         """ Returns a list of tuples of the quantile and its location """
@@ -183,6 +185,7 @@ def bimodal( low1, high1, mode1, low2, high2, mode2 ):
         return random.triangular( low1, high1, mode1 )
     else:
         return random.triangular( low2, high2, mode2 )
+
 
 def output (tiles, data, stats, name):
     data.sort()
